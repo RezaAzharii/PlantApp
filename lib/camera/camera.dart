@@ -60,6 +60,11 @@ class _CameraPageState extends State<CameraPage> {
     }
   }
 
+  Future<void> _captureImage() async {
+    final XFile file = await _controller!.takePicture();
+    Navigator.pop(context, File(file.path));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold();
