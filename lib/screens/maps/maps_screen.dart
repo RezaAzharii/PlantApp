@@ -175,6 +175,78 @@ class _MapsPageState extends State<MapsPage> {
         ],
         iconTheme: const IconThemeData(color: Colors.white),
       ),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            GoogleMap(
+              initialCameraPosition: _initialCamera!,
+              myLocationEnabled: true,
+              myLocationButtonEnabled: true,
+              mapType: MapType.normal,
+              compassEnabled: true,
+              tiltGesturesEnabled: false,
+              scrollGesturesEnabled: true,
+              zoomGesturesEnabled: true,
+              rotateGesturesEnabled: true,
+              trafficEnabled: true,
+              indoorViewEnabled: true,
+              onMapCreated: (GoogleMapController ctrl) {
+                _ctrl.complete(ctrl);
+              },
+              markers: _pickedMarker != null ? {_pickedMarker!} : {},
+              onTap: _onTap,
+            ),
+            Positioned(
+              top: 8,
+              left: 5,
+              right: 50,
+              child: Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Text(
+                    'Lokasi Saat Ini: $_currentAddress',
+                    style: const TextStyle(fontSize: 14),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+            ),
+            if (_pickedAddress != null)
+              Positioned(
+                bottom: 15,
+                left: 5,
+                right: 50,
+                child: Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Alamat Dipilih:',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          _pickedAddress!,
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
     );
   }
 }
