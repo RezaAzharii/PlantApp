@@ -124,6 +124,61 @@ class _CameraPageState extends State<CameraPage> {
     );
   }
   
+  Widget _buildZoomControls() {
+    if (!_isZoomSupported) return const SizedBox.shrink();
+
+    return Positioned(
+      bottom: 160,
+      left: 20,
+      right: 20,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              _circleButton(Icons.looks_one, () => _setZoom(1.0), size: 44),
+              const SizedBox(width: 10),
+              if (_maxZoom >= 3.0)
+                _circleButton(Icons.looks_3, () => _setZoom(3.0), size: 44),
+              const SizedBox(width: 10),
+              if (_maxZoom >= 5.0)
+                _circleButton(Icons.looks_5, () => _setZoom(5.0), size: 44),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              const Icon(Icons.zoom_out, color: Colors.white),
+              Expanded(
+                child: Slider(
+                  value: _zoom,
+                  min: _minZoom,
+                  max: _maxZoom,
+                  divisions: ((_maxZoom - _minZoom) * 10).toInt(),
+                  label: '${_zoom.toStringAsFixed(1)}x',
+                  onChanged: (value) => _setZoom(value),
+                  activeColor: kPrimaryColor,
+                ),
+              ),
+              const Icon(Icons.zoom_in, color: Colors.white),
+            ],
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            decoration: BoxDecoration(
+              color: Colors.black45,
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: Text(
+              '${_zoom.toStringAsFixed(1)}x',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
