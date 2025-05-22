@@ -121,11 +121,92 @@ class _ProfileScreenState extends State<ProfileScreen> {
       behavior: HitTestBehavior.opaque,
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        
+        appBar: AppBar(
+          title: const Text('Profile', style: TextStyle(color: Colors.white)),
+          iconTheme: const IconThemeData(color: Colors.white),
+          backgroundColor: kPrimaryColor,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.save),
+              color: Colors.white,
+              onPressed: _saveProfile,
+            ),
+          ],
+        ),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(kDefaultPadding),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              GestureDetector(
+                onTap: _showImagePickerOptions,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    CircleAvatar(
+                      radius: 60,
+                      backgroundColor: Colors.grey[300],
+                      backgroundImage:
+                          _imageProfile != null
+                              ? FileImage(_imageProfile!)
+                              : null,
+                      child:
+                          _imageProfile == null
+                              ? Icon(
+                                Icons.person,
+                                size: 60,
+                                color: Colors.grey[600],
+                              )
+                              : null,
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: kPrimaryColor,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.edit,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              Text(
+                "Reza Azhari",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                "rezaazhari809@gmail.com",
+                style: TextStyle(fontSize: 16, color: Colors.black54),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                "+62 812-3456-7890",
+                style: TextStyle(fontSize: 16, color: Colors.black54),
+              ),
+              const SizedBox(height: 32),
+
+              _buildAddressSection(),
+              const SizedBox(height: 16),
+              _buildProvinceAndPostalCode(),
+            ],
+          ),
+        ),
       ),
     );
   }
-Widget _buildAddressSection() {
+
+  Widget _buildAddressSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
