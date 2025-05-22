@@ -158,6 +158,23 @@ class _MapsPageState extends State<MapsPage> {
         ),
       );
     }
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Pilih Alamat',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: kPrimaryColor,
+        actions: [
+          if (_pickedAddress != null)
+            IconButton(
+              icon: const Icon(Icons.save),
+              color: Colors.white,
+              onPressed: _confirmSelection,
+            ),
+        ],
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
+    );
   }
 }
