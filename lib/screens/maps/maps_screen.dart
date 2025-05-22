@@ -21,6 +21,45 @@ class _MapsPageState extends State<MapsPage> {
   CameraPosition? _initialCamera;
   Position? _currentPosition;
 
+  Future<void> _setupLocation() async {
+    try {
+      final pos = await getPermission();
+      _currentPosition = pos;
+      _initialCamera = CameraPosition(
+        target: LatLng(pos.latitude, pos.longitude),
+        zoom: 16,
+      );
+
+      final placemarks = await placemarkFromCoordinates(
+        _currentPosition!.latitude,
+        _currentPosition!.longitude,
+      );
+
+      final p = placemarks.first;
+      _currentAddress = '${p.name}, ${p.locality}, ${p.country}';
+
+      setState(() {
+        _pickedMarker = Marker(
+          markerId: const MarkerId('current'),
+          position: LatLng(pos.latitude, pos.longitude),
+          infoWindow: InfoWindow(
+            title: 'Lokasi Saat Ini',
+            snippet: '${p.name}, ${p.locality}',
+          ),
+        );
+        _pickedAddress =
+            '${p.street}, ${p.locality}, ${p.subAdministrativeArea}, ${p.administrativeArea}, ${p.postalCode}, ${p.country}.';
+      });
+    } catch (e) {
+      _initialCamera = const CameraPosition(target: LatLng(0, 0), zoom: 2);
+      setState(() {});
+      print(e);
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.toString())));
+    }
+  }
+
   Future<Position> getPermission() async {
     if (!await Geolocator.isLocationServiceEnabled()) {
       throw 'Location service belum aktif';
