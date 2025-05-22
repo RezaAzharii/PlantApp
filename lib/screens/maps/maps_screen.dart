@@ -21,6 +21,12 @@ class _MapsPageState extends State<MapsPage> {
   CameraPosition? _initialCamera;
   Position? _currentPosition;
 
+  @override
+  void initState() {
+    super.initState();
+    _setupLocation();
+  }
+
   Future<void> _setupLocation() async {
     try {
       final pos = await getPermission();
