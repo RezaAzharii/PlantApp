@@ -23,6 +23,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController _provinsiController = TextEditingController();
   final TextEditingController _kodePosController = TextEditingController();
 
+  void _extractAddressComponents() {
+    if (_alamatDipilih != null) {
+      final addressParts = _alamatDipilih!.split(',');
+      if (addressParts.length > 3) {
+        _provinsiController.text = addressParts[addressParts.length - 3].trim();
+        _kodePosController.text = addressParts[addressParts.length - 2].trim();
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
