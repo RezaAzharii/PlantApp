@@ -125,4 +125,118 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+Widget _buildAddressSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Alamat',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 8),
+        InkWell(
+          onTap: () async {
+            final result = await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const MapsPage()),
+            );
+            if (result != null) {
+              setState(() {
+                _alamatDipilih = result;
+                _extractAddressComponents();
+              });
+            }
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.location_on, color: kPrimaryColor),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Text(
+                    _alamatDipilih ?? 'Tap untuk memilih alamat',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color:
+                          _alamatDipilih != null ? Colors.black : Colors.grey,
+                    ),
+                  ),
+                ),
+                Icon(Icons.chevron_right, color: Colors.grey),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildProvinceAndPostalCode() {
+    return Row(
+      children: [
+        Expanded(
+          flex: 2,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Provinsi',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              AbsorbPointer(
+                child: TextFormField(
+                  controller: _provinsiController,
+                  decoration: InputDecoration(
+                    hintText: "Provinsi",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(width: 16),
+        Expanded(
+          flex: 1,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Kode Pos',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              AbsorbPointer(
+                child: TextFormField(
+                  controller: _kodePosController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    hintText: "Kode pos",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  void dispose() {
+    _provinsiController.dispose();
+    _kodePosController.dispose();
+    super.dispose();
+  }
 }
