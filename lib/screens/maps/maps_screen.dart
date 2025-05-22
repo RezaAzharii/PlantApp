@@ -85,6 +85,32 @@ class _MapsPageState extends State<MapsPage> {
     return Geolocator.getCurrentPosition();
   }
 
+  Future<void> _onTap(LatLng latlng) async {
+    final placemarks = await placemarkFromCoordinates(
+      latlng.latitude,
+      latlng.longitude,
+    );
+
+    final p = placemarks.first;
+    setState(() {
+      _pickedMarker = Marker(
+        markerId: const MarkerId('picked'),
+        position: latlng,
+        infoWindow: InfoWindow(
+          title: p.name?.isEmpty == true ? p.name : 'Lokasi Dipilih',
+          snippet: '${p.street}, ${p.locality}',
+        ),
+      );
+    });
+    final ctrl = await _ctrl.future;
+    await ctrl.animateCamera(CameraUpdate.newLatLngZoom(latlng, 16));
+
+    setState(() {
+      _pickedAddress =
+          '${p.street}, ${p.locality}, ${p.subAdministrativeArea}, ${p.administrativeArea}, ${p.postalCode}, ${p.country}.';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold();
