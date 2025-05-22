@@ -39,6 +39,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
     await Permission.manageExternalStorage.request();
   }
 
+  Future<void> _takePicture() async {
+    await _requestPermission();
+    final File? result = await Navigator.push<File?>(
+      context,
+      MaterialPageRoute(builder: (_) => const CameraPage()),
+    );
+    if (result != null) {
+      final saved = await StorageHelper.saveImage(result, 'camera');
+      setState(() => _imageProfile = saved);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Foto profil berhasil diubah')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
