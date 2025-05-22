@@ -111,6 +111,37 @@ class _MapsPageState extends State<MapsPage> {
     });
   }
 
+  void _confirmSelection() {
+    showDialog(
+      context: context,
+      builder:
+          (_) => AlertDialog(
+            title: const Text('Konfirmasi Alamat'),
+            content: SingleChildScrollView(child: Text(_pickedAddress!)),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text(
+                  'Batal',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context, _pickedAddress);
+                },
+                style: ElevatedButton.styleFrom(backgroundColor: kPrimaryColor),
+                child: const Text(
+                  'Pilih',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold();
