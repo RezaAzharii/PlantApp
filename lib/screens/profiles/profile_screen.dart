@@ -97,6 +97,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  void _saveProfile() {
+    if (_imageProfile == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Harap pilih foto profil terlebih dahulu'),
+        ),
+      );
+      return;
+    }
+
+    Navigator.pop(context, {
+      'image': _imageProfile,
+      'address': _alamatDipilih,
+      'province': _provinsiController.text,
+      'postalCode': _kodePosController.text,
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
