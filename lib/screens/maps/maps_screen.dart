@@ -144,6 +144,20 @@ class _MapsPageState extends State<MapsPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (_initialCamera == null) {
+      return const Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(color: kPrimaryColor),
+              SizedBox(height: 16),
+              Text('Mengambil lokasi...'),
+            ],
+          ),
+        ),
+      );
+    }
     return Scaffold();
   }
 }
