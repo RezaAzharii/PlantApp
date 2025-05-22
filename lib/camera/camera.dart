@@ -123,7 +123,7 @@ class _CameraPageState extends State<CameraPage> {
       ),
     );
   }
-  
+
   Widget _buildZoomControls() {
     if (!_isZoomSupported) return const SizedBox.shrink();
 
@@ -181,7 +181,73 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   @override
+  void dispose() {
+    _controller?.dispose();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body:
+          _controller?.value.isInitialized ?? false
+              ? LayoutBuilder(
+                builder: (context, constraints) {
+                  return GestureDetector(
+                    onTapDown: (details) => _handleTap(details, constraints),
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        Center(
+                          child: ClipRect(
+                            child: SizedOverflowBox(
+                              alignment: Alignment.center,
+                              size: Size(360, 480),
+                              child: CameraPreview(_controller!),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 40,
+                          left: 20,
+                          right: 20,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              _circleButton(_flasIcon(), _toggleFlash),
+                              _circleButton(
+                                Icons.camera,
+                                _captureImage,
+                                size: 70,
+                              ),
+                              _circleButton(
+                                Icons.flip_camera_android,
+                                _switchCamera,
+                              ),
+                            ],
+                          ),
+                        ),
+                        _buildZoomControls(),
+                      ],
+                    ),
+                  );
+                },
+              )
+              : const Scaffold(
+                backgroundColor: kBackgroundColor,
+                body: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(color: kPrimaryColor),
+                      SizedBox(height: 16),
+                      Text('Menyiapkan camera...'),
+                    ],
+                  ),
+                ),
+              ),
+    );
   }
 }
