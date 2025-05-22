@@ -65,6 +65,11 @@ class _CameraPageState extends State<CameraPage> {
     Navigator.pop(context, File(file.path));
   }
 
+  void _switchCamera() async {
+    final nextIndex = (_selectedCameraIdx + 1) % _cameras.length;
+    await _setupCamera(nextIndex);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold();
