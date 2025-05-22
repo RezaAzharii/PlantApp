@@ -33,6 +33,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  Future<void> _requestPermission() async {
+    await Permission.camera.request();
+    await Permission.storage.request();
+    await Permission.manageExternalStorage.request();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
