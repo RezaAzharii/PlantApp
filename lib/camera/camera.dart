@@ -81,6 +81,13 @@ class _CameraPageState extends State<CameraPage> {
     setState(() => _flashMode = next);
   }
 
+  void _setZoom(double value) async {
+    if (!_isZoomSupported) return;
+    _zoom = value.clamp(_minZoom, _maxZoom);
+    await _controller!.setZoomLevel(_zoom);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold();
